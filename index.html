@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>X-SEARCH — Cabinet de recrutement spécialisé Industrie</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --bg-soft: #F6F5FA;
+    --surface: #FFFFFF;
+    --line: rgba(16,12,30,0.09);
+    --ink: #0E0B16;
+    --text: rgba(14,11,22,0.60);
+    --text-dim: rgba(14,11,22,0.42);
+    --accent: #7C3AED;
+    --accent-light: #8B5CF6;
+    --accent-deep: #6D28D9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--accent); color: #fff; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 2rem; }
+  h1, h2, h3 { font-family: 'Syne', sans-serif; color: var(--ink); letter-spacing: -0.03em; line-height: 1.05; }
+
+  /* ══════════ NAV ══════════ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 2rem;
+    background: rgba(255,255,255,0.72);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s, background 0.3s;
+  }
+  nav.scrolled { border-bottom-color: var(--line); background: rgba(255,255,255,0.92); }
+  .logo {
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem;
+    color: var(--ink); letter-spacing: -0.02em; display: flex; align-items: center; gap: 2px;
+  }
+  .logo .x { color: var(--accent); display: inline-block; transition: transform 0.4s cubic-bezier(.2,.8,.2,1); }
+  .logo:hover .x { transform: rotate(90deg); }
+  .logo span { color: var(--ink); }
+  .logo small { font-weight: 600; font-size: 0.72rem; color: var(--text-dim); letter-spacing: 0.18em; text-transform: uppercase; margin-left: 6px; align-self: center; }
+  .nav-links { display: flex; align-items: center; gap: 2.2rem; }
+  .nav-links a { color: var(--text); text-decoration: none; font-size: 0.92rem; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    background: var(--accent); color: #fff !important;
+    padding: 0.6rem 1.3rem; border-radius: 50px; font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(124,58,237,0.32); background: var(--accent-light); }
+
+  /* ══════════ HERO ══════════ */
+  .hero { position: relative; padding: 12rem 0 7rem; overflow: hidden; }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 80% 60% at 70% 30%, #000 20%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 70% 30%, #000 20%, transparent 75%);
+  }
+  .hero-glow {
+    position: absolute; top: -12%; right: -6%; width: 640px; height: 640px; z-index: 0;
+    background: radial-gradient(circle, rgba(124,58,237,0.16), transparent 65%);
+    filter: blur(30px); pointer-events: none;
+  }
+  .hero-inner { position: relative; z-index: 2; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 4rem; align-items: center; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.22);
+    color: var(--accent-deep); font-size: 0.78rem; font-weight: 500;
+    padding: 0.4rem 0.95rem; border-radius: 50px; margin-bottom: 1.8rem;
+    letter-spacing: 0.02em; animation: fadeUp 0.7s ease both;
+  }
+  .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 rgba(124,58,237,0.6); animation: pulse 2s infinite; }
+  .hero h1 { font-size: clamp(2.6rem, 5.4vw, 4.4rem); font-weight: 800; animation: fadeUp 0.7s 0.05s ease both; }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero-sub { font-size: 1.12rem; color: var(--text); max-width: 30rem; margin-top: 1.6rem; font-weight: 400; animation: fadeUp 0.7s 0.15s ease both; }
+  .hero-actions { display: flex; gap: 1rem; margin-top: 2.4rem; align-items: center; animation: fadeUp 0.7s 0.25s ease both; }
+  .btn-primary {
+    background: var(--accent); color: #fff; text-decoration: none;
+    font-weight: 500; font-size: 0.98rem; padding: 0.95rem 1.9rem; border-radius: 50px;
+    display: inline-flex; align-items: center; gap: 9px; transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(124,58,237,0.35); background: var(--accent-light); }
+  .btn-ghost {
+    color: var(--ink); text-decoration: none; font-weight: 500; font-size: 0.98rem;
+    padding: 0.95rem 1.6rem; border-radius: 50px; border: 1px solid var(--line); transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.04); }
+  .hero-tagline {
+    display: flex; align-items: center; gap: 1.3rem; margin-top: 3.4rem;
+    padding-top: 2.6rem; border-top: 1px solid var(--line); animation: fadeUp 0.8s 0.4s ease both;
+  }
+  .hero-tagline-num { font-family: 'Syne', sans-serif; font-size: 3.8rem; font-weight: 800; color: var(--accent); letter-spacing: -0.06em; line-height: 1; flex-shrink: 0; }
+  .hero-tagline-main { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); }
+  .hero-tagline-sub { font-size: 0.86rem; color: var(--text-dim); font-weight: 400; }
+
+  /* Carte flottante */
+  .hero-visual { position: relative; animation: fadeUp 0.8s 0.3s ease both; }
+  .float-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+    padding: 1.6rem; box-shadow: 0 30px 70px rgba(16,12,30,0.12);
+    animation: float 6s ease-in-out infinite;
+  }
+  .fc-head { display: flex; align-items: center; gap: 12px; margin-bottom: 1.2rem; }
+  .fc-avatar {
+    width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    display: flex; align-items: center; justify-content: center; font-family: 'Syne'; font-weight: 800; color: #fff; font-size: 1.05rem;
+  }
+  .fc-name { color: var(--ink); font-weight: 500; font-size: 0.95rem; }
+  .fc-role { font-size: 0.8rem; color: var(--text-dim); }
+  .fc-tag { margin-left: auto; font-size: 0.72rem; font-weight: 500; color: var(--accent-deep); background: rgba(124,58,237,0.1); padding: 4px 10px; border-radius: 50px; }
+  .fc-row { display: flex; justify-content: space-between; font-size: 0.86rem; padding: 0.6rem 0; border-top: 1px solid var(--line); }
+  .fc-row span:first-child { color: var(--text-dim); }
+  .fc-row span:last-child { color: var(--ink); font-weight: 500; }
+  .fc-bar { height: 6px; border-radius: 50px; background: rgba(16,12,30,0.06); margin-top: 1rem; overflow: hidden; }
+  .fc-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent-light)); border-radius: 50px; animation: fill 2.4s 0.6s ease forwards; }
+  .fc-bar-label { display: flex; justify-content: space-between; font-size: 0.74rem; margin-top: 8px; color: var(--text-dim); }
+  .notif {
+    position: absolute; bottom: -26px; left: -34px;
+    background: var(--ink); color: #fff; border-radius: 14px;
+    padding: 0.85rem 1.1rem; display: flex; align-items: center; gap: 11px;
+    box-shadow: 0 20px 50px rgba(16,12,30,0.25); animation: float 6s ease-in-out infinite 1s;
+  }
+  .notif-icon { width: 34px; height: 34px; border-radius: 9px; background: #16a34a; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; }
+  .notif-title { font-weight: 700; font-size: 0.85rem; font-family: 'Syne'; color: #fff; }
+  .notif-sub { font-size: 0.74rem; color: rgba(255,255,255,0.6); }
+
+  /* ══════════ SECTION GENERIC ══════════ */
+  section { position: relative; }
+  .sec-head { max-width: 40rem; margin-bottom: 3.4rem; }
+  .eyebrow { display: inline-block; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .sec-head h2 { font-size: clamp(2rem, 4vw, 2.9rem); font-weight: 800; }
+  .sec-head p { margin-top: 1.1rem; font-size: 1.05rem; color: var(--text); font-weight: 400; }
+
+  /* ══════════ EXPERTISE ══════════ */
+  .expertise { padding: 7rem 0; }
+  .pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4rem; }
+  .pillar {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    padding: 2rem 1.7rem; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+  .pillar:hover { transform: translateY(-6px); border-color: rgba(124,58,237,0.3); box-shadow: 0 18px 44px rgba(16,12,30,0.08); }
+  .pillar-icon {
+    width: 48px; height: 48px; border-radius: 12px; margin-bottom: 1.4rem;
+    background: rgba(124,58,237,0.09); border: 1px solid rgba(124,58,237,0.2);
+    display: flex; align-items: center; justify-content: center; color: var(--accent);
+  }
+  .pillar h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .pillar p { font-size: 0.92rem; color: var(--text); font-weight: 400; }
+
+  /* ══════════ PROCESS ══════════ */
+  .process { padding: 7rem 0; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4rem; counter-reset: step; }
+  .step { position: relative; padding-top: 2.4rem; }
+  .step::before {
+    counter-increment: step; content: counter(step, decimal-leading-zero);
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.6rem; color: rgba(124,58,237,0.28);
+    position: absolute; top: -0.6rem; left: 0;
+  }
+  .step h3 { font-size: 1.18rem; margin-bottom: 0.6rem; padding-top: 0.4rem; }
+  .step p { font-size: 0.92rem; color: var(--text); font-weight: 400; }
+  .step-line { height: 1px; background: linear-gradient(90deg, var(--accent), transparent); margin-top: 1.2rem; }
+
+  /* ══════════ TARIFICATION ══════════ */
+  .pricing { padding: 7rem 0; }
+  .pricing-wrap { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3.5rem; align-items: center; }
+  .pricing-big { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(5rem, 12vw, 9rem); color: var(--ink); line-height: 0.9; letter-spacing: -0.05em; }
+  .pricing-big em { font-style: normal; color: var(--accent); }
+  .pricing-cap { font-size: 1.05rem; color: var(--text); font-weight: 400; margin-top: 1rem; }
+  .pricing-steps { display: flex; flex-direction: column; gap: 1rem; }
+  .pstep { display: flex; gap: 1.1rem; align-items: flex-start; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 14px; padding: 1.4rem 1.5rem; }
+  .pstep-num { width: 34px; height: 34px; flex-shrink: 0; border-radius: 9px; background: rgba(124,58,237,0.1); color: var(--accent-deep); display: flex; align-items: center; justify-content: center; font-family: 'Syne'; font-weight: 800; font-size: 0.95rem; }
+  .pstep h4 { font-family: 'Syne'; color: var(--ink); font-size: 1rem; font-weight: 700; margin-bottom: 3px; }
+  .pstep p { font-size: 0.88rem; color: var(--text); font-weight: 400; }
+  .pricing-example { margin-top: 1.4rem; background: var(--bg-soft); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 12px; padding: 1.2rem 1.4rem; font-size: 0.9rem; color: var(--text); }
+  .pricing-example strong { color: var(--ink); font-weight: 600; }
+  .guarantee { margin-top: 2rem; display: flex; align-items: center; gap: 14px; background: linear-gradient(135deg, var(--accent-deep), var(--accent)); border-radius: 14px; padding: 1.3rem 1.6rem; }
+  .guarantee svg { flex-shrink: 0; }
+  .guarantee-t { font-family: 'Syne'; color: #fff; font-weight: 700; font-size: 1rem; }
+  .guarantee-s { color: rgba(255,255,255,0.85); font-size: 0.85rem; }
+
+  /* ══════════ CONTACT ══════════ */
+  .contact { padding: 7rem 0 8rem; background: var(--bg-soft); border-top: 1px solid var(--line); }
+  .contact-wrap { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 4rem; align-items: start; }
+  .contact-side h2 { font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 800; }
+  .contact-side p { margin-top: 1.1rem; color: var(--text); font-weight: 400; font-size: 1.02rem; }
+  .contact-points { margin-top: 2.2rem; display: flex; flex-direction: column; gap: 1.1rem; }
+  .cpoint { display: flex; gap: 12px; align-items: center; font-size: 0.95rem; color: var(--text); }
+  .cpoint svg { color: var(--accent); flex-shrink: 0; }
+  form { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 2.2rem; box-shadow: 0 24px 60px rgba(16,12,30,0.07); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+  .form-group { margin-bottom: 1.1rem; }
+  .form-group label { display: block; font-size: 0.84rem; color: var(--text); margin-bottom: 0.5rem; font-weight: 500; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; background: #FBFAFD; border: 1px solid var(--line); border-radius: 10px;
+    padding: 0.85rem 1rem; color: var(--ink); font-family: 'DM Sans'; font-size: 0.94rem; transition: border-color 0.2s, background 0.2s;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(14,11,22,0.3); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); background: #fff; }
+  .form-group textarea { resize: vertical; min-height: 96px; }
+  .form-group select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%237C3AED' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; }
+  .form-group select option { background: #fff; }
+  .form-check { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 1.4rem; }
+  .form-check input { margin-top: 4px; accent-color: var(--accent); }
+  .form-check label { font-size: 0.82rem; color: var(--text-dim); }
+  .form-check a { color: var(--accent-deep); }
+  .form-submit {
+    width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 50px;
+    padding: 1rem; font-family: 'DM Sans'; font-size: 0.98rem; font-weight: 500; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 9px; transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .form-submit:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(124,58,237,0.35); background: var(--accent-light); }
+  .form-success { display: none; text-align: center; padding: 3rem 1rem; }
+  .form-success .fs-icon { width: 60px; height: 60px; border-radius: 50%; background: rgba(22,163,74,0.12); color: #16a34a; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem; }
+  .form-success h3 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+  .form-success p { font-size: 0.9rem; color: var(--text-dim); }
+
+  /* ══════════ FOOTER ══════════ */
+  footer { padding: 3rem 0; background: var(--bg); border-top: 1px solid var(--line); }
+  .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.4rem; }
+  .footer-links { list-style: none; display: flex; gap: 1.8rem; }
+  .footer-links a { color: var(--text-dim); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--ink); }
+  .footer-copy { font-size: 0.82rem; color: var(--text-dim); }
+
+  /* ══════════ REVEAL ══════════ */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ══════════ ANIMATIONS ══════════ */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+  @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(124,58,237,0.5); } 70% { box-shadow: 0 0 0 9px rgba(124,58,237,0); } 100% { box-shadow: 0 0 0 0 rgba(124,58,237,0); } }
+  @keyframes fill { to { width: 92%; } }
+
+  /* ══════════ RESPONSIVE ══════════ */
+  @media (max-width: 900px) {
+    .hero-inner, .pricing-wrap, .contact-wrap { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .pillars, .steps { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 560px) {
+    .container { padding: 0 1.3rem; }
+    .pillars, .steps, .form-row { grid-template-columns: 1fr; }
+    nav { padding: 1rem 1.3rem; }
+    .hero { padding: 9rem 0 5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav id="nav">
+  <div class="logo"><span class="x">X</span><span>-SEARCH</span><small>Industrie</small></div>
+  <div class="nav-links">
+    <a href="#expertise">Expertise</a>
+    <a href="#process">Méthode</a>
+    <a href="#pricing">Tarifs</a>
+    <a href="#contact" class="nav-cta">Nous contacter</a>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<header class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge"><span class="dot"></span> Cabinet spécialisé Industrie &amp; Ingénierie</div>
+        <h1>Le cabinet qui<br>comprend<br><em>vos besoins.</em></h1>
+        <p class="hero-sub">X-SEARCH recrute vos profils techniques et d'encadrement dans l'industrie : maintenance, méthodes, qualité, supply chain, ingénierie. Des candidats opérationnels, vite.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary">
+            Lancer un recrutement
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="#process" class="btn-ghost">Notre méthode</a>
+        </div>
+        <div class="hero-tagline">
+          <div class="hero-tagline-num">48h</div>
+          <div>
+            <div class="hero-tagline-main">Premiers profils livrés.</div>
+            <div class="hero-tagline-sub">Pas de promesses. Des candidats qualifiés sur votre bureau en deux jours.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="float-card">
+          <div class="fc-head">
+            <div class="fc-avatar">RM</div>
+            <div>
+              <div class="fc-name">Responsable Maintenance</div>
+              <div class="fc-role">Secteur industriel — Auvergne-Rhône-Alpes</div>
+            </div>
+            <div class="fc-tag">Présenté</div>
+          </div>
+          <div class="fc-row"><span>Expérience</span><span>12 ans en milieu industriel</span></div>
+          <div class="fc-row"><span>Disponibilité</span><span>Préavis 1 mois</span></div>
+          <div class="fc-row"><span>Compétences</span><span>GMAO · TPM · Lean</span></div>
+          <div class="fc-bar"><i></i></div>
+          <div class="fc-bar-label"><span>Adéquation au poste</span><span>92 %</span></div>
+        </div>
+        <div class="notif">
+          <div class="notif-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div>
+            <div class="notif-title">Recrutement finalisé</div>
+            <div class="notif-sub">Poste pourvu en 11 jours</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ EXPERTISE ══════════ -->
+<section class="expertise" id="expertise">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Notre valeur ajoutée</span>
+      <h2>Une expertise 100&nbsp;% industrie.</h2>
+      <p>On ne recrute pas « un peu de tout ». On connaît vos métiers, vos contraintes terrain et le marché des talents techniques.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar reveal">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 20h20M4 20V8l5-3v15M9 20V5l5-3v18M14 20v-9l5 2v7"/></svg>
+        </div>
+        <h3>Spécialisation industrie</h3>
+        <p>Maintenance, méthodes, qualité, supply chain, ingénierie : un seul secteur, maîtrisé en profondeur.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2L3 14h7v8l10-12h-7z"/></svg>
+        </div>
+        <h3>Réactivité 48h</h3>
+        <p>Premiers profils qualifiés livrés sous 48h grâce à un vivier de candidats déjà sourcés et qualifiés.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Accompagnement</h3>
+        <p>Un interlocuteur unique du brief à l'intégration. On suit le candidat jusqu'à sa prise de poste.</p>
+      </div>
+      <div class="pillar reveal">
+        <div class="pillar-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Garantie 3 mois</h3>
+        <p>Un recrutement qui ne tient pas dans les 3 mois&nbsp;? On relance la recherche, sans frais supplémentaires.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROCESS ══════════ -->
+<section class="process" id="process">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Notre méthode</span>
+      <h2>Quatre étapes, zéro temps perdu.</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <h3>Brief</h3>
+        <p>On cadre le poste, son environnement et les vrais critères de réussite avec vos équipes.</p>
+        <div class="step-line"></div>
+      </div>
+      <div class="step reveal">
+        <h3>Sourcing</h3>
+        <p>Approche directe, vivier et chasse ciblée sur les profils techniques que vous ne trouvez pas en annonce.</p>
+        <div class="step-line"></div>
+      </div>
+      <div class="step reveal">
+        <h3>Sélection</h3>
+        <p>Entretiens, validation des compétences métier et de l'adéquation terrain. On ne présente que le pertinent.</p>
+        <div class="step-line"></div>
+      </div>
+      <div class="step reveal">
+        <h3>Présentation</h3>
+        <p>Une shortlist de candidats qualifiés, avec notre analyse. Vous décidez, on accompagne l'intégration.</p>
+        <div class="step-line"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ TARIFICATION ══════════ -->
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Tarification</span>
+      <h2>Simple, transparente, sans surprise.</h2>
+      <p>Pas d'abonnement, pas de frais cachés. Vous ne payez qu'au résultat.</p>
+    </div>
+    <div class="pricing-wrap">
+      <div class="reveal">
+        <div class="pricing-big">15<em>%</em></div>
+        <div class="pricing-cap">du salaire brut annuel du candidat recruté.</div>
+      </div>
+      <div class="reveal">
+        <div class="pricing-steps">
+          <div class="pstep">
+            <div class="pstep-num">1</div>
+            <div>
+              <h4>10&nbsp;% d'acompte à la signature</h4>
+              <p>Versé au lancement de la mission pour engager la recherche.</p>
+            </div>
+          </div>
+          <div class="pstep">
+            <div class="pstep-num">2</div>
+            <div>
+              <h4>Le solde à l'embauche</h4>
+              <p>Les 90&nbsp;% restants ne sont facturés que lorsque votre candidat signe.</p>
+            </div>
+          </div>
+        </div>
+        <div class="pricing-example">
+          <strong>Exemple :</strong> pour un Responsable technique à 50&nbsp;000&nbsp;€ brut/an, les honoraires s'élèvent à <strong>7&nbsp;500&nbsp;€</strong> — dont <strong>750&nbsp;€</strong> d'acompte à la signature.
+        </div>
+        <div class="guarantee">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          <div>
+            <div class="guarantee-t">Garantie 3 mois incluse</div>
+            <div class="guarantee-s">Recrutement non concluant&nbsp;? On relance la recherche sans frais.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-wrap">
+      <div class="contact-side reveal">
+        <h2>Parlons de votre prochain recrutement.</h2>
+        <p>Décrivez votre besoin, on vous recontacte sous 24h ouvrées avec une première approche.</p>
+        <div class="contact-points">
+          <div class="cpoint"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Premiers profils sous 48h</div>
+          <div class="cpoint"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Honoraires uniquement au résultat</div>
+          <div class="cpoint"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Spécialistes de vos métiers industriels</div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <form id="contactForm" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nom &amp; prénom *</label>
+              <input type="text" placeholder="Jean Dupont" required />
+            </div>
+            <div class="form-group">
+              <label>Entreprise *</label>
+              <input type="text" placeholder="Nom du site / société" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Email professionnel *</label>
+              <input type="email" placeholder="jean@entreprise.fr" required />
+            </div>
+            <div class="form-group">
+              <label>Téléphone</label>
+              <input type="tel" placeholder="+33 6 XX XX XX XX" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Poste à pourvoir *</label>
+            <select required>
+              <option value="" disabled selected>Sélectionnez un profil</option>
+              <option>Directeur / Directrice de site</option>
+              <option>Responsable de production</option>
+              <option>Responsable maintenance</option>
+              <option>Ingénieur méthodes / industrialisation</option>
+              <option>Responsable qualité / QHSE</option>
+              <option>Responsable supply chain / logistique</option>
+              <option>Chef d'atelier / Chef d'équipe</option>
+              <option>Technicien de maintenance</option>
+              <option>Responsable bureau d'études</option>
+              <option>Acheteur industriel</option>
+              <option>Autre profil industriel</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Détaillez votre besoin</label>
+            <textarea placeholder="Localisation, contexte, volume de recrutement, délai souhaité..."></textarea>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" id="rgpd" required />
+            <label for="rgpd">J'accepte que X-SEARCH traite mes données afin de répondre à ma demande, conformément à sa <a href="#">politique de confidentialité</a>.</label>
+          </div>
+          <button type="submit" class="form-submit">
+            Envoyer ma demande
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+        </form>
+
+        <div class="form-success" id="formSuccess">
+          <div class="fs-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3>Votre demande est envoyée&nbsp;!</h3>
+          <p>Nous vous recontactons sous 24h ouvrées.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <div class="logo"><span class="x">X</span><span>-SEARCH</span></div>
+        <div class="footer-copy" style="margin-top:6px;">Cabinet de recrutement spécialisé Industrie</div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">Politique de confidentialité</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="footer-copy">© 2026 X-SEARCH. Tous droits réservés.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    });
+  });
+</script>
+</body>
+</html>
